@@ -5,6 +5,7 @@
 ![MySQL](https://img.shields.io/badge/MySQL-8.0.15-yellow.svg)
 ![Maven](https://img.shields.io/badge/Maven-3.5.2-blue.svg)
 [![LICENSE](https://img.shields.io/badge/license-MIT-black.svg)](https://gitee.com/gybaoyu/Article-Community/blob/master/LICENSE)
+[![MyBlog](https://img.shields.io/badge/About-Blog-pink.svg)](https://abalone.life)
 
 ## 项目简介
 
