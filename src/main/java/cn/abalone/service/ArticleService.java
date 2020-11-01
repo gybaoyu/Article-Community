@@ -125,7 +125,9 @@ public class ArticleService {
         List<Article> result = new LinkedList<>();
         Set<Map.Entry<Integer, Article>> eSet = articleCache.entrySet();
         for (Map.Entry<Integer, Article> integerArticleEntry : eSet) {
-            result.add(integerArticleEntry.getValue());
+            if (integerArticleEntry.getValue().getPass()) {
+                result.add(integerArticleEntry.getValue());
+            }
         }
         return result;
     }
@@ -153,7 +155,9 @@ public class ArticleService {
         List<Article> result = new ArrayList<>();
         Set<Map.Entry<Integer, Article>> eSet = articleCache.entrySet();
         for (Map.Entry<Integer, Article> i : eSet) {
-            result.add(i.getValue());
+            if (i.getValue().getPass()) {
+                result.add(i.getValue());
+            }
         }
         PageHelper.startPage(pageNow, pageSize, "`time` desc");
         return new PageInfo<>(result);
@@ -179,7 +183,7 @@ public class ArticleService {
         }
     }
 
-    public PageInfo<Article> search(String text,int pageNow, int pageSize) {
+    public PageInfo<Article> search(String text, int pageNow, int pageSize) {
         List<Article> result = new LinkedList<>();
         Set<Map.Entry<Integer, Article>> eSet = articleCache.entrySet();
         for (Map.Entry<Integer, Article> e : eSet) {
@@ -188,7 +192,7 @@ public class ArticleService {
                 result.add(tmp);
                 continue;
             }
-            if (tmp.getContent().contains(text)){
+            if (tmp.getContent().contains(text)) {
                 result.add(tmp);
             }
         }
