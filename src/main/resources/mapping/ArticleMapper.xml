@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.abalone.mapper.ArticleMapper">
+
+    <resultMap id="BaseResultMap" type="cn.abalone.entity.Article">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="view" jdbcType="INTEGER" property="view"/>
+        <result column="like" jdbcType="INTEGER" property="like"/>
+        <result column="author" jdbcType="VARCHAR" property="author"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="des" jdbcType="VARCHAR" property="des"/>
+        <result column="tag" jdbcType="VARCHAR" property="tag"/>
+        <result column="img" jdbcType="VARCHAR" property="img"/>
+        <result column="time" jdbcType="TIMESTAMP" property="time"/>
+        <result column="pass" jdbcType="TINYINT" property="pass"/>
+        <result column="top" jdbcType="TINYINT" property="top"/>
+    </resultMap>
+
+    <insert id="createArticle" useGeneratedKeys="true" keyProperty="article.id" keyColumn="id">
+        insert into chinese.article(uid, view, `like`, author, title, content, des, tag, img, `time`, pass, top)
+        VALUES (#{article.uid}, 0, 0, #{article.author}, #{article.title}, #{article.content}, #{article.des},
+                #{article.tag}, #{article.img}, #{article.time}, 0, 0);
+    </insert>
+
+    <select id="lastInsertID" resultType="java.lang.Integer">
+        select LAST_INSERT_ID()
+    </select>
+
+    <update id="updateArticle">
+        update chinese.article
+        set article.title=#{article.title},
+            article.content=#{article.content},
+            article.tag=#{article.tag},
+            article.img=#{article.img},
+            article.des=#{article.des},
+            article.time=#{article.time}
+        where article.id = #{article.id}
+    </update>
+
+    <select id="getArticleList" resultType="cn.abalone.entity.Article">
+        select id,
+               author,
+               title,
+               des,
+               `view`,
+               `like`,
+               `time`,
+               img,
+               tag,
+               top
+        from chinese.article
+        where pass = 1;
+    </select>
+
+    <select id="getByIsPass" resultType="cn.abalone.entity.Article">
+        select id, author, title, time,top
+        from chinese.article
+        where pass = #{pass}
+    </select>
+
+    <select id="byLike" resultType="cn.abalone.entity.Article">
+        select id, title, des
+        from chinese.article where pass=true
+        order by `like` desc
+        limit #{size}
+    </select>
+
+    <update id="setTop">
+        update chinese.article
+        set top = #{top}
+        where id = #{id};
+    </update>
+
+    <select id="getTop" resultType="cn.abalone.entity.Article">
+        select id,
+               title,
+               des
+        from chinese.article where top=1;
+    </select>
+
+</mapper>

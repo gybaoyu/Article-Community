@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.abalone.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="cn.abalone.entity.User">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="clazz" jdbcType="INTEGER" property="clazz"/>
+        <result column="sess" jdbcType="INTEGER" property="sess"/>
+    </resultMap>
+
+    <select id="nameByID" resultType="java.lang.String">
+        select name
+        from chinese.user
+        where id = #{id}
+    </select>
+
+    <select id="selectAllByID" resultType="cn.abalone.entity.User">
+        select *
+        from user
+        where id = #{id}
+    </select>
+
+    <select id="selectAllByName" resultType="cn.abalone.entity.User">
+        select *
+        from user
+        where name = #{name}
+    </select>
+
+    <select id="checkUser" resultType="cn.abalone.entity.User">
+        select name, password
+        from user
+        where name = #{name}
+          and password = #{password}
+    </select>
+
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="user.id" keyColumn="id">
+        insert into chinese.user(name, password, type, email, clazz, sess)
+        values (#{user.name}, #{user.password}, #{user.type}, #{user.email}, #{user.clazz}, #{user.sess});
+    </insert>
+
+    <update id="updateUser">
+        update chinese.user
+        set password=#{user.password},
+            sess=#{user.sess},
+            clazz=#{user.clazz},
+            email=#{user.email},
+            type=#{user.type}
+        where id = #{user.id}
+    </update>
+</mapper>

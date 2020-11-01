@@ -1,0 +1,50 @@
+server:
+  port: 90 # 项目端口号
+
+site:
+  ackey: 123456 # 前端调api时需要的密钥
+  filePath: D:/ # 上传文件的路径
+  link: https://baidu.com # 网站网址
+  name: 我爱中国 # 网站名
+  img: http://browser9.qhimg.com/bdr/__85/t016ad88ddaf2ae2d92.jpg # 邮箱回复的图片
+  mailFrom: xxxxl@qq.com # 和spring.mail.username填一样的即可
+
+spring:
+  mail:
+    port: 465
+    host: smtp.qq.com
+    username: abalone-mail@qq.com
+    password: xxxxxxx # 此处填你在qq邮箱处申请的密钥
+    protocol: smtp
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+
+  datasource:
+    username: root
+    password: 123456 #数据库密码
+    url: jdbc:mysql://localhost:3306/chinese?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  servlet:
+    multipart:
+      max-request-size: 512MB
+      file-size-threshold: 512MB
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: cn.abalone.entity
+
+logging:
+  level:
+    com:
+      example:
+        mapper : off
+pagehelper:
+  helperDialect: mysql
+  params: count=countSql
+  reasonable: true
+  supportMethodsArguments: true
