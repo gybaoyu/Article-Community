@@ -1,4 +1,5 @@
 # 声明: 仅供学习,请勿商用 :-)
+**想要获取项目的发行版请前往: https://gitee.com/gybaoyu/Article-Community/releases**
 
 ![JDK](https://img.shields.io/badge/JDK-1.8-red.svg)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0.15-yellow.svg)
