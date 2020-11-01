@@ -59,16 +59,15 @@
    cd chinese
    # 然后将文件上传到本文件夹,你可以使用wget或者xshell的rz -y指令
    # wget使用方法: wget 文件下载路径
-   # 如: wget https://gitee.com/gybaoyu/Article-Community/attach_files/506765/download/chinese-0.0.1-SNAPSHOT.jar
+   # 如: wget https://files.gitee.com/group1/M00/12/AF/CgAAEl-eDNaAA1O9AqX8fzeQB5k907.jar?token=e16b6cbb4f0e3cfba86f574dd8d2d68c&ts=1604193684&attname=chinese-0.0.1-SNAPSHOT.jar&disposition=attachment
    ```
 
 3. 更改配置文件
 
    ```shell
    # 在/home/chinese中输入:
-   wget https://abalone.life/upload/2020/10/application-b1bc7941f52b431795dff04c474bd3d9.yml
-   # 然后输入
-   mv application-b1bc7941f52b431795dff04c474bd3d9.yml application.yml
+   wget https://gitee.com/gybaoyu/Article-Community/raw/master/application.yml
+   # 然后使用vim自己按照注释修改
    ```
 
 4. 搭建数据库环境
