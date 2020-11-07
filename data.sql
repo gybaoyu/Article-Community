@@ -15,15 +15,15 @@ create table article
     pass    tinyint(1) default 0 not null,
     top     tinyint(1) default 0 not null
 );
-create table chat
-(
-    id   int auto_increment
-        primary key,
-    name varchar(255) not null,
-    `to` varchar(255) null,
-    text text         not null,
-    time timestamp    not null
-);
+# create table chat
+# (
+#     id   int auto_increment
+#         primary key,
+#     name varchar(255) not null,
+#     `to` varchar(255) null,
+#     text text         not null,
+#     time timestamp    not null
+# );
 create table comment
 (
     id   int auto_increment

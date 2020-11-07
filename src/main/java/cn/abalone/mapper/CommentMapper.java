@@ -15,4 +15,6 @@ public interface CommentMapper {
     void addComment(@Param("comment") Comment comment);
     List<Comment>selectByAID(@Param("aid")Integer aid);
     Integer[] selectByUID(@Param("uid")Integer uid);
+    void addChat(@Param("chat")Comment comment);
+    void delete(@Param("id")Integer id);
 }

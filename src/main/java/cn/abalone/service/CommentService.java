@@ -5,6 +5,8 @@ import cn.abalone.entity.Comment;
 import cn.abalone.entity.User;
 import cn.abalone.mapper.CommentMapper;
 import cn.abalone.mapper.UserMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -33,6 +35,20 @@ public class CommentService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    public void addChat(Comment chat) {
+        chat.setTime(new Date());
+        commentMapper.addChat(chat);
+    }
+
+    public void deleteChat(Integer id) {
+        commentMapper.delete(id);
+    }
+
+    public PageInfo<Comment> getChatForIndex(int pageNow, int pageSize) {
+        PageHelper.startPage(pageNow, pageSize, "`time` desc");
+        return new PageInfo<>(commentMapper.selectByAID(-1));
+    }
+
     //评论,添加数据
     public void comment(Comment comment) {
         comment.setTime(new Date());
@@ -50,7 +66,8 @@ public class CommentService {
                 helper.setSubject("「"+siteName()+"」的邮箱提示");
                 javaMailSender.send(message);
             } catch (MessagingException e) {
-                e.printStackTrace();
+                return;
+//                e.printStackTrace();
             }
         }
     }

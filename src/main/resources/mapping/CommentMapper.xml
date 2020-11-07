@@ -14,6 +14,10 @@
         insert into chinese.comment(uid, aid, text, time)
         VALUES (#{comment.uid}, #{comment.aid}, #{comment.text}, #{comment.time})
     </insert>
+    <insert id="addChat" useGeneratedKeys="true" keyProperty="chat.id" keyColumn="id">
+        insert into chinese.comment(uid, aid, text, time)
+        VALUES (#{chat.uid}, -1, #{chat.text}, #{chat.time})
+    </insert>
     <select id="selectByAID" resultType="cn.abalone.entity.Comment">
         select *
         from chinese.comment
@@ -25,4 +29,9 @@
         from comment
         where uid = #{uid};
     </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from chinese.comment where id=#{id};
+        delete from chinese.reply where `from`=#{id};
+    </delete>
 </mapper>

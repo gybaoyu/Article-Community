@@ -47,7 +47,8 @@ public class ReplyService {
                 helper.setSubject("「"+siteName()+"」的邮箱提示");
                 javaMailSender.send(message);
             } catch (MessagingException e) {
-                e.printStackTrace();
+                return;
+//                e.printStackTrace();
             }
         }
     }
