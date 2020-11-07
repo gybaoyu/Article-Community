@@ -43,4 +43,9 @@ public class CommentController {
     public Integer byUID(@PathVariable("uid")Integer uid){
         return commentService.selectByUID(uid);
     }
+
+    @GetMapping("/deleteComment/{id}")
+    public void delete(@PathVariable Integer id) {
+        commentService.deleteChat(id);
+    }
 }

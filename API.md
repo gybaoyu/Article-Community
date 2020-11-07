@@ -46,6 +46,8 @@
   
 - /queryComment/{aid} =>queryc(Integer `aid`) List<Comment>  通过文章id查询评论
 
+- /deleteComment/{id}=>delete(Integer `id`)void 通过id删除comment(适用于删除chat,直接填id即可)
+  - **被删除的(comment/chat)下的所有回复也会被删除**
 
 - /countCommentByUID/{uid} => byUID(Integer `uid`)通过uid查询评论数量
   - **如果返回为null表示0条评论**
@@ -61,6 +63,8 @@
 - /queryReply/{from} =>queryc(Integer `from`)List<Reply>  通过评论id查询回复  
   
 - /getReplyByArticleID/{aid} =>byAID(Integer aid) List<Reply> 通过文章id查询回复
+
+- **由于数据结构方面的设计,reply不支持直接删除(除非你删除reply所在的comment)**
 
 
 
@@ -115,7 +119,6 @@
   - to: **string** 回复给的用户; text:  string 内容
   - 注意from和to是string
 
-- /deleteChat/{id}=>delete(Integer `id`)void 通过id删除chat
 - /queryChat=>query(int `now`,int `size`)获取非回复的留言(已分页) PageInfo<Chat>
   - now: 当前第几页 默认1
   - size: 每页的条数 默认10

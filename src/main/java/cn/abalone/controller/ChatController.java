@@ -26,9 +26,4 @@ public class ChatController {
                                        @RequestParam(value = "size", defaultValue = "10") int size) {
         return commentService.getChatForIndex(now, size);
     }
-
-    @GetMapping("/deleteChat/{id}")
-    public void delete(@PathVariable Integer id) {
-        commentService.deleteChat(id);
-    }
 }
