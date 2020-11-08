@@ -8,6 +8,7 @@ site:
   name: 我爱中国 # 网站名
   img: http://browser9.qhimg.com/bdr/__85/t016ad88ddaf2ae2d92.jpg # 邮箱回复的图片
   mailFrom: xxxxl@qq.com # 和spring.mail.username填一样的即可
+  commentCache: true # 填true或false,true表示会将评论和留言预加载到内存,反之不会
 
 spring:
   mail:

@@ -14,9 +14,12 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static cn.abalone.cache.Cache.commentCache;
+import static cn.abalone.cache.Cache.commentsCache;
 import static cn.abalone.entity.Prop.*;
 
 /**
@@ -35,24 +38,42 @@ public class CommentService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    //commentCache表示是否开启缓存,commentsCache表示缓存的数据引用
     public void addChat(Comment chat) {
-        chat.setTime(new Date());
         commentMapper.addChat(chat);
+        if (commentCache) {
+            chat.setTime(new Date());
+            if (!commentsCache.containsKey(-1))
+                commentsCache.put(-1, new ArrayList<>());
+            commentsCache.get(-1).add(chat);
+        }
     }
 
     public void deleteChat(Integer id) {
+        Comment tmp = commentMapper.selectByID(id);
         commentMapper.delete(id);
+        commentMapper.deleteReply(id);
+        if (commentCache) {
+            commentsCache.get(tmp.getAid()).remove(tmp);
+        }
     }
 
     public PageInfo<Comment> getChatForIndex(int pageNow, int pageSize) {
         PageHelper.startPage(pageNow, pageSize, "`time` desc");
-        return new PageInfo<>(commentMapper.selectByAID(-1));
+        if (commentsCache != null)
+            return new PageInfo<>(commentsCache.get(-1));
+        else return new PageInfo<>(commentMapper.selectByAID(-1));
     }
 
     //评论,添加数据
     public void comment(Comment comment) {
-        comment.setTime(new Date());
         commentMapper.addComment(comment);
+        if (commentCache) {
+            comment.setTime(new Date());
+            int key=comment.getAid();
+            commentsCache.computeIfAbsent(key, k -> new ArrayList<>());
+            commentsCache.get(comment.getAid()).add(comment);
+        }
         Article article = articleService.allDataForArticleByID(comment.getAid());
         User to = userMapper.selectAllByID(article.getUid());//要对哪个人发邮件
         if (to.getEmail() != null && !to.getEmail().equals("")) {
@@ -62,8 +83,8 @@ public class CommentService {
                 MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
                 helper.setFrom(mailFrom());
                 helper.setTo(to.getEmail());
-                helper.setText(mailContent(from, to, comment,article.getTitle()),true);//设置可以使用html
-                helper.setSubject("「"+siteName()+"」的邮箱提示");
+                helper.setText(mailContent(from, to, comment, article.getTitle()), true);//设置可以使用html
+                helper.setSubject("「" + siteName() + "」的邮箱提示");
                 javaMailSender.send(message);
             } catch (MessagingException e) {
                 return;
@@ -74,7 +95,9 @@ public class CommentService {
 
     //通过文章id加载一个文章中的comment
     public List<Comment> queryComment(Integer aid) {
-        return commentMapper.selectByAID(aid);
+        if (commentCache)
+            return commentsCache.get(aid);
+        else return commentMapper.selectByAID(aid);
     }
 
     //通过UID查找评论数量
@@ -82,7 +105,7 @@ public class CommentService {
         return commentMapper.selectByUID(uid).length;
     }
 
-    private String mailContent(User from, User to, Comment comment,String title) {
+    private String mailContent(User from, User to, Comment comment, String title) {
         return "<div id=\"mailContentContainer\" class=\"qmbox qm_con_body_content qqmail_webmail_only\" style=\"\">\n" +
                 "<div style=\"background: white;\n" +
                 "      width: 95%;\n" +
@@ -106,7 +129,7 @@ public class CommentService {
                 "        margin: -25px auto 0 ;\n" +
                 "        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.30)\">Dear " + to.getName() + "</p>\n" +
                 "        <br>\n" +
-                "        <h3>您的文章『"+title+"』有一条来自<a style=\"text-decoration: none;color: orange \" target=\"_blank\" href=\"" + siteLink() + "\" rel=\"noopener\">"+from.getName()+"</a>的评论</h3>\n" +
+                "        <h3>您的文章『" + title + "』有一条来自<a style=\"text-decoration: none;color: orange \" target=\"_blank\" href=\"" + siteLink() + "\" rel=\"noopener\">" + from.getName() + "</a>的评论</h3>\n" +
                 "        <br>\n" +
                 "        <p style=\"font-size: 14px;\">" + from.getName() + " 给您的评论如下：</p>\n" +
                 "        <p style=\"border-bottom:#ddd 1px solid;border-left:#ddd 1px solid;padding-bottom:20px;background-color:#eee;margin:15px 0px;padding-left:20px;padding-right:20px;border-top:#ddd 1px solid;border-right:#ddd 1px solid;padding-top:20px\">" + comment.getText() + "</p>\n" +
@@ -129,6 +152,10 @@ public class CommentService {
                 "       </p>\n" +
                 "    </div>       \n" +
                 "</div><style type=\"text/css\">.qmbox style, .qmbox script, .qmbox head, .qmbox link, .qmbox meta {display: none !important;}</style></div>";
+    }
+
+    public List<Comment> cache() {
+        return commentMapper.selectAll();
     }
 }
 

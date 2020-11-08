@@ -21,7 +21,7 @@
     <insert id="createArticle" useGeneratedKeys="true" keyProperty="article.id" keyColumn="id">
         insert into chinese.article(uid, view, `like`, author, title, content, des, tag, img, `time`, pass, top)
         VALUES (#{article.uid}, 0, 0, #{article.author}, #{article.title}, #{article.content}, #{article.des},
-                #{article.tag}, #{article.img}, #{article.time}, 0, 0);
+                #{article.tag}, #{article.img}, TIMESTAMP(), 0, 0);
     </insert>
 
     <select id="lastInsertID" resultType="java.lang.Integer">

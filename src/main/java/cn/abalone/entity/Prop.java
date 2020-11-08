@@ -3,6 +3,8 @@ package cn.abalone.entity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Create by Abalone
  * CreateTime: 2020/9/30 16:36
@@ -69,5 +71,4 @@ public class Prop {
     public static String mailFrom() {
         return mailFrom;
     }
-
 }

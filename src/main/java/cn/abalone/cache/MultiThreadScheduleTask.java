@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-import static cn.abalone.cache.ArticleCache.*;
+import static cn.abalone.cache.Cache.*;
 
 /**
  * Create by Abalone

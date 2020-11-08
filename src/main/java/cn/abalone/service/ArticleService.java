@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static cn.abalone.cache.ArticleCache.*;
+import static cn.abalone.cache.Cache.*;
 
 /**
  * Create by Abalone
@@ -34,19 +34,19 @@ public class ArticleService {
     }
 
     public void create(Article article) {
-        article.setTime(new Date());
         article.setPass(false);
         article.setTop(false);
         article.setAuthor(uMapper.nameByID(article.getUid()));
         articleMapper.createArticle(article);
         int tmp = articleMapper.lastInsertID();
+        article.setTime(new Date());
         articleCache.put(tmp, article);//先在数据库中添加,利用返回的主键再加到缓存
         likeViewCache.put(tmp, new LikeAndView(0, 0));
     }
 
     public void update(Article article) {
-        article.setTime(new Date());
         articleMapper.updateArticle(article);
+        article.setTime(new Date());
         articleCache.put(article.getId(), article);
     }
 

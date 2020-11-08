@@ -18,4 +18,6 @@ public interface ReplyMapper {
     List<Reply> selectByFrom(@Param("from") Integer from);//通过评论id查询回复
     @Select("select * from chinese.reply where aid=#{aid}")
     List<Reply> selectByAID(@Param("aid") Integer aid);
+    @Select("select * from chinese.reply")
+    List<Reply> selectAll();
 }

@@ -11,12 +11,12 @@
     </resultMap>
 
     <insert id="addComment" useGeneratedKeys="true" keyProperty="comment.id" keyColumn="id">
-        insert into chinese.comment(uid, aid, text, time)
-        VALUES (#{comment.uid}, #{comment.aid}, #{comment.text}, #{comment.time})
+        insert into chinese.comment(uid, aid, text)
+        VALUES (#{comment.uid}, #{comment.aid}, #{comment.text})
     </insert>
     <insert id="addChat" useGeneratedKeys="true" keyProperty="chat.id" keyColumn="id">
-        insert into chinese.comment(uid, aid, text, time)
-        VALUES (#{chat.uid}, -1, #{chat.text}, #{chat.time})
+        insert into chinese.comment(uid, aid, text)
+        VALUES (#{chat.uid}, -1, #{chat.text})
     </insert>
     <select id="selectByAID" resultType="cn.abalone.entity.Comment">
         select *
@@ -32,6 +32,8 @@
 
     <delete id="delete" parameterType="java.lang.Integer">
         delete from chinese.comment where id=#{id};
+    </delete>
+    <delete id="deleteReply" parameterType="java.lang.Integer">
         delete from chinese.reply where `from`=#{id};
     </delete>
 </mapper>

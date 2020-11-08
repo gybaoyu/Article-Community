@@ -114,15 +114,13 @@
 ### ChatController
 
 - /chat=> add(Chat `chat`)void 添加chat **POST**  **RequestBody**
-  - chat对象中必填: from,to,text
-  - from: **string** 当前登录的用户
-  - to: **string** 回复给的用户; text:  string 内容
-  - 注意from和to是string
+  - chat对象中必填: uid,text
+  - uid: **string** 当前登录的用户
+  - text:  string 内容
 
 - /queryChat=>query(int `now`,int `size`)获取非回复的留言(已分页) PageInfo<Chat>
   - now: 当前第几页 默认1
   - size: 每页的条数 默认10
-- /queryReplyChat => queryReplyChat()获取是回复的留言(to字段不为-1的,未分页) List<Chat>
 
 ### FileController
 

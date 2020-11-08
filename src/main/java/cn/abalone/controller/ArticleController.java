@@ -2,6 +2,7 @@ package cn.abalone.controller;
 
 import cn.abalone.dto.LikeAndView;
 import cn.abalone.entity.Article;
+import cn.abalone.entity.Comment;
 import cn.abalone.service.ArticleService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-import static cn.abalone.cache.ArticleCache.articleCache;
-import static cn.abalone.cache.ArticleCache.likeViewCache;
+import static cn.abalone.cache.Cache.*;
 
 
 /**
@@ -146,6 +146,12 @@ public class ArticleController {
         for (Map.Entry<Integer, LikeAndView> entry : likeViewCache.entrySet()) {
             System.out.println("Key: " + entry.getKey() + "\r\n Value: " + entry.getValue());
         }
+        System.out.println("==========================");
+        for (Map.Entry<Integer, List<Comment>> entry : commentsCache.entrySet()) {
+            System.out.println("Key: " + entry.getKey() + "\r\n Value: " + entry.getValue());
+        }
+        System.out.println("==========================");
+        System.out.println(replyCache);
     }
 
     //同步缓存到数据库

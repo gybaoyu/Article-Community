@@ -25,6 +25,7 @@ public class CommentController {
      */
     @PostMapping("/comment")
     public void comment(@RequestBody Comment comment) {
+        System.out.println(comment);
         commentService.comment(comment);
     }
 

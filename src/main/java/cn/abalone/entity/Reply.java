@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reply {
+public class Reply implements Comparable<Reply>{
     private Integer aid;//文章id
     private Integer uid;//当前登录用户的id,来自于哪个人
     private Integer from;//对应comment的id,来自于哪条评论
@@ -29,5 +29,10 @@ public class Reply {
         this.from = from;
         this.to = to;
         this.text = text;
+    }
+
+    @Override
+    public int compareTo(Reply o) {
+        return this.time.compareTo(o.time);
     }
 }

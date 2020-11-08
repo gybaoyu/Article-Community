@@ -2,7 +2,6 @@ package cn.abalone.service;
 
 import cn.abalone.entity.Reply;
 import cn.abalone.entity.User;
-import cn.abalone.mapper.ArticleMapper;
 import cn.abalone.mapper.ReplyMapper;
 import cn.abalone.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,12 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import static cn.abalone.cache.Cache.*;
 import static cn.abalone.entity.Prop.*;
 
 /**
@@ -33,8 +35,10 @@ public class ReplyService {
 
     //进行回复操作
     public void reply(Reply reply) {
-        reply.setTime(new Date());
         replyMapper.addReply(reply);
+        if (commentCache)
+            reply.setTime(new Date());
+            replyCache.add(reply);
         User to = userMapper.selectAllByID(reply.getTo());//要对哪个人回复
         if (to.getEmail() != null && !to.getEmail().equals("")) {
             User from = userMapper.selectAllByID(reply.getUid());//来自于哪个人
@@ -43,8 +47,8 @@ public class ReplyService {
                 MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
                 helper.setFrom(mailFrom());
                 helper.setTo(to.getEmail());
-                helper.setText(mailContent(from, to, reply),true);//设置可以使用html
-                helper.setSubject("「"+siteName()+"」的邮箱提示");
+                helper.setText(mailContent(from, to, reply), true);//设置可以使用html
+                helper.setSubject("「" + siteName() + "」的邮箱提示");
                 javaMailSender.send(message);
             } catch (MessagingException e) {
                 return;
@@ -55,11 +59,26 @@ public class ReplyService {
 
     //查询某一个评论下的回复
     public List<Reply> queryReply(Integer from) {
-        return replyMapper.selectByFrom(from);
+        if (commentsCache!=null) {
+            List<Reply> results = new ArrayList<>();
+            for (Reply reply : replyCache) {
+                if (reply.getFrom().equals(from))
+                    results.add(reply);
+            }
+            return results;
+        } else return replyMapper.selectByFrom(from);
     }
 
     public List<Reply> byAID(Integer aid) {
-        return replyMapper.selectByAID(aid);
+        if (commentsCache!=null) {
+            List<Reply> results = new ArrayList<>();
+            for (Reply reply : replyCache) {
+                if (reply.getAid().equals(aid))
+                    results.add(reply);
+            }
+
+            return results;
+        } else return replyMapper.selectByAID(aid);
     }
 
     private String mailContent(User from, User to, Reply reply) {
@@ -86,7 +105,7 @@ public class ReplyService {
                 "        margin: -25px auto 0 ;\n" +
                 "        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.30)\">Dear " + to.getName() + "</p>\n" +
                 "        <br>\n" +
-                "        <h3>您有一条来自<a style=\"text-decoration: none;color: orange \" target=\"_blank\" href=\"" + siteLink() + "\" rel=\"noopener\">"+from.getName()+"</a>的回复</h3>\n" +
+                "        <h3>您有一条来自<a style=\"text-decoration: none;color: orange \" target=\"_blank\" href=\"" + siteLink() + "\" rel=\"noopener\">" + from.getName() + "</a>的回复</h3>\n" +
                 "        <br>\n" +
                 "        <p style=\"font-size: 14px;\">" + from.getName() + " 给您的回复如下：</p>\n" +
                 "        <p style=\"border-bottom:#ddd 1px solid;border-left:#ddd 1px solid;padding-bottom:20px;background-color:#eee;margin:15px 0px;padding-left:20px;padding-right:20px;border-top:#ddd 1px solid;border-right:#ddd 1px solid;padding-top:20px\">" + reply.getText() + "</p>\n" +
@@ -109,5 +128,9 @@ public class ReplyService {
                 "       </p>\n" +
                 "    </div>       \n" +
                 "</div><style type=\"text/css\">.qmbox style, .qmbox script, .qmbox head, .qmbox link, .qmbox meta {display: none !important;}</style></div>";
+    }
+
+    public List<Reply> cache() {
+        return replyMapper.selectAll();
     }
 }
