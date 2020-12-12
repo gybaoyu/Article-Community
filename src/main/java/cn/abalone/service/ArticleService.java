@@ -37,9 +37,9 @@ public class ArticleService {
         article.setPass(false);
         article.setTop(false);
         article.setAuthor(uMapper.nameByID(article.getUid()));
+        article.setTime(new Date());
         articleMapper.createArticle(article);
         int tmp = articleMapper.lastInsertID();
-        article.setTime(new Date());
         articleCache.put(tmp, article);//先在数据库中添加,利用返回的主键再加到缓存
         likeViewCache.put(tmp, new LikeAndView(0, 0));
     }

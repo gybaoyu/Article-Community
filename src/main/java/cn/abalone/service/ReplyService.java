@@ -35,9 +35,9 @@ public class ReplyService {
 
     //进行回复操作
     public void reply(Reply reply) {
+        reply.setTime(new Date());
         replyMapper.addReply(reply);
         if (commentCache)
-            reply.setTime(new Date());
             replyCache.add(reply);
         User to = userMapper.selectAllByID(reply.getTo());//要对哪个人回复
         if (to.getEmail() != null && !to.getEmail().equals("")) {

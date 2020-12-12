@@ -12,7 +12,7 @@
     </resultMap>
     <insert id="addReply">
         insert into chinese.reply(aid,uid,`from`, time, text, `to`)
-        values (#{reply.aid},#{reply.uid},#{reply.from}, TIMESTAMP(), #{reply.text}, #{reply.to});
+        values (#{reply.aid},#{reply.uid},#{reply.from}, #{reply.time}, #{reply.text}, #{reply.to});
     </insert>
     <select id="selectByFrom" resultType="cn.abalone.entity.Reply">
         select *
