@@ -20,19 +20,19 @@
 
     <select id="selectAllByID" resultType="cn.abalone.entity.User">
         select *
-        from user
+        from chinese.user
         where id = #{id}
     </select>
 
     <select id="selectAllByName" resultType="cn.abalone.entity.User">
         select *
-        from user
+        from chinese.user
         where name = #{name}
     </select>
 
     <select id="checkUser" resultType="cn.abalone.entity.User">
         select name, password
-        from user
+        from chinese.user
         where name = #{name}
           and password = #{password}
     </select>

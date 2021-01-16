@@ -152,15 +152,8 @@ public class ArticleService {
      * @return 返回文章list
      */
     public PageInfo<Article> getAllArticleForPage(int pageNow, int pageSize) {
-        List<Article> result = new ArrayList<>();
-        Set<Map.Entry<Integer, Article>> eSet = articleCache.entrySet();
-        for (Map.Entry<Integer, Article> i : eSet) {
-            if (i.getValue().getPass()) {
-                result.add(i.getValue());
-            }
-        }
         PageHelper.startPage(pageNow, pageSize, "`time` desc");
-        return new PageInfo<>(result);
+        return new PageInfo<>(articleMapper.getCacheArticle());
     }
 
     /**

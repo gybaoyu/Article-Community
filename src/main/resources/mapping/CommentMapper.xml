@@ -21,12 +21,12 @@
     <select id="selectByAID" resultType="cn.abalone.entity.Comment">
         select *
         from chinese.comment
-        where `aid` = #{aid} order by comment.time desc;
+        where comment.`aid` = #{aid} order by comment.`time` desc;
     </select>
 
     <select id="selectByUID" resultType="java.util.Arrays">
         select id
-        from comment
+        from chinese.comment
         where uid = #{uid};
     </select>
 
