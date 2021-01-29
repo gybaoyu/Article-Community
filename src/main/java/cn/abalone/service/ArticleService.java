@@ -4,6 +4,7 @@ import cn.abalone.dto.LikeAndView;
 import cn.abalone.entity.Article;
 import cn.abalone.mapper.ArticleMapper;
 import cn.abalone.mapper.UserMapper;
+import cn.abalone.util.PageUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static cn.abalone.cache.Cache.*;
+import static cn.abalone.util.PageUtil.*;
 
 /**
  * Create by Abalone
@@ -151,9 +153,8 @@ public class ArticleService {
      * @param pageSize 每页的数据数量
      * @return 返回文章list
      */
-    public PageInfo<Article> getAllArticleForPage(int pageNow, int pageSize) {
-        PageHelper.startPage(pageNow, pageSize, "`time` desc");
-        return new PageInfo<>(articleMapper.getCacheArticle());
+    public List<Article> getAllArticleForPage(int pageNow, int pageSize) {
+         return new PageUtil<Article>().startPage(new ArrayList<>(articleCache.values()),pageNow,pageSize);
     }
 
     /**

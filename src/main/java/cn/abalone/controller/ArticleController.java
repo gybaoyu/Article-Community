@@ -100,7 +100,7 @@ public class ArticleController {
      * @return 分页后的集合
      */
     @GetMapping("/getArticleForIndex")
-    public PageInfo<Article> forIndex(@RequestParam(value = "now", defaultValue = "1") Integer now,
+    public List<Article> forIndex(@RequestParam(value = "now", defaultValue = "1") Integer now,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
         return articleService.getAllArticleForPage(now, size);
     }
