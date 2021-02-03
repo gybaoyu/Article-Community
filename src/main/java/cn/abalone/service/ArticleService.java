@@ -5,6 +5,7 @@ import cn.abalone.entity.Article;
 import cn.abalone.mapper.ArticleMapper;
 import cn.abalone.mapper.UserMapper;
 import cn.abalone.util.PageUtil;
+import cn.abalone.util.ThreeTuple;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,7 +154,7 @@ public class ArticleService {
      * @param pageSize 每页的数据数量
      * @return 返回文章list
      */
-    public List<Article> getAllArticleForPage(int pageNow, int pageSize) {
+    public ThreeTuple<List,Integer,Integer> getAllArticleForPage(int pageNow, int pageSize) {
          return new PageUtil<Article>().startPage(new ArrayList<>(articleCache.values()),pageNow,pageSize);
     }
 

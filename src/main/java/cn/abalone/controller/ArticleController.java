@@ -4,10 +4,12 @@ import cn.abalone.dto.LikeAndView;
 import cn.abalone.entity.Article;
 import cn.abalone.entity.Comment;
 import cn.abalone.service.ArticleService;
+import cn.abalone.util.ThreeTuple;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -100,8 +102,8 @@ public class ArticleController {
      * @return 分页后的集合
      */
     @GetMapping("/getArticleForIndex")
-    public List<Article> forIndex(@RequestParam(value = "now", defaultValue = "1") Integer now,
-                                      @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public ThreeTuple<List,Integer, Integer> forIndex(@RequestParam(value = "now", defaultValue = "1") Integer now,
+                                                                     @RequestParam(value = "size", defaultValue = "10") Integer size) {
         return articleService.getAllArticleForPage(now, size);
     }
 

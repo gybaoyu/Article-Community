@@ -94,10 +94,14 @@
 - /getArticleByAuthor/{aid} => allArticleForOneAuthor(Integer `aid`) List<Article>
   
   -  能够查出某个作者的所有文章,并且article对象的**所有字段**都会被查出来
-- /getArticleForIndex =>forIndex(Integer `now`,Integer `size`)PageInfo<Article>获取分页所需数据(已经分页了的)
+- /getArticleForIndex =>forIndex(Integer `now`,Integer `size`)ThreeTuple<List,Integer,Integer>获取分页所需数据(已经分页了的)
   - now: 当前是第几页,默认为第一页的数据
   - size: 每一页显示多少条数据,默认十条
-  - 返回的PageInfo<Article>中会带有你需要的api,具体可以看参数名字理解或者查pagehelper文档
+  - list: 文章的集合(返回值)
+  - total: 文章的总数(返回值)
+  - pages: 总共的页数(返回值)
+  - 请不要传参为0,会报异常
+
 - /like => like(Integer `aid`) 查询一个文章的赞的数量,aid必填
 - /byLike/{size} byLike(Integer size)List<Article> 通过点赞数排序
   
@@ -135,3 +139,8 @@
 
   - 返回值为Object,当作是String即可,需要弹出一个提示框展示返回的log(也就是返回值,因为那里面会有导入学生的一些信息)
   - 请注意表格中的数据只能有中文,学生名字需要全都在最左边第一列或最上面第一行,否则会返回报错信息,不影响数据
+  
+## 个别工具说明
+
+### ThreeTuple(TwoTuple)
+   - **一种存放多个对象的元组**
